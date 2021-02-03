@@ -1,19 +1,19 @@
-import 'dart:async';
+import 'package:bloc/bloc.dart';
+import 'my_homepage_event.dart';
+import 'my_homepage_state.dart';
 
-class MyHomePageBloc{
+class MyHomePageBloc extends Bloc<MyHomePageEvent, MyHomePageState> {
+  MyHomePageBloc() : super(Idle());
   int counter = 0;
-
-  //controller de entrada e saída de dados.
-  // ignore: close_sinks
-  final StreamController _streamController = StreamController();
-  //entrada do dado
-  Sink get input => _streamController.sink;
-  //saída de dado
-  Stream get output => _streamController.stream;
-
-  void incrementCounter() {
-    counter++;
-    input.add(counter);
+  @override
+  Stream<MyHomePageState> mapEventToState(MyHomePageEvent event) async* {
+    // yield Loading();
+    // await Future.delayed(Duration(seconds: 2));
+    if (event is IncrementEvent) {
+      yield Success(counter: ++counter);
+    }
+    if (event is DecrementEvent) {
+      yield Success(counter: --counter);
+    }
   }
-
 }
